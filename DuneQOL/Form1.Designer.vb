@@ -22,29 +22,52 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Button1 = New Button()
+        ProgressBar1 = New ProgressBar()
+        BTN_Apply = New Button()
+        CB_SkipIntro = New CheckBox()
         SuspendLayout()
         ' 
-        ' Button1
+        ' ProgressBar1
         ' 
-        Button1.Location = New Point(124, 80)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(202, 40)
-        Button1.TabIndex = 0
-        Button1.Text = "Skip Intro Movies"
-        Button1.UseVisualStyleBackColor = True
+        ProgressBar1.Location = New Point(12, 110)
+        ProgressBar1.Name = "ProgressBar1"
+        ProgressBar1.Size = New Size(430, 10)
+        ProgressBar1.TabIndex = 1
+        ' 
+        ' BTN_Apply
+        ' 
+        BTN_Apply.Location = New Point(367, 81)
+        BTN_Apply.Name = "BTN_Apply"
+        BTN_Apply.Size = New Size(75, 23)
+        BTN_Apply.TabIndex = 2
+        BTN_Apply.Text = "Apply"
+        BTN_Apply.UseVisualStyleBackColor = True
+        ' 
+        ' CB_SkipIntro
+        ' 
+        CB_SkipIntro.AutoSize = True
+        CB_SkipIntro.Location = New Point(12, 12)
+        CB_SkipIntro.Name = "CB_SkipIntro"
+        CB_SkipIntro.Size = New Size(76, 19)
+        CB_SkipIntro.TabIndex = 3
+        CB_SkipIntro.Text = "Skip Intro"
+        CB_SkipIntro.UseVisualStyleBackColor = True
         ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(454, 132)
-        Controls.Add(Button1)
+        Controls.Add(CB_SkipIntro)
+        Controls.Add(BTN_Apply)
+        Controls.Add(ProgressBar1)
         Name = "Form1"
         Text = "Dune: Awakening QOL"
         ResumeLayout(False)
+        PerformLayout()
     End Sub
-
-    Friend WithEvents Button1 As Button
+    Friend WithEvents ProgressBar1 As ProgressBar
+    Friend WithEvents BTN_Apply As Button
+    Friend WithEvents CB_SkipIntro As CheckBox
 
 End Class
