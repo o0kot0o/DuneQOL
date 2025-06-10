@@ -22,17 +22,10 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        ProgressBar1 = New ProgressBar()
         BTN_Apply = New Button()
         CB_SkipIntro = New CheckBox()
+        LIST_LOG = New ListBox()
         SuspendLayout()
-        ' 
-        ' ProgressBar1
-        ' 
-        ProgressBar1.Location = New Point(12, 110)
-        ProgressBar1.Name = "ProgressBar1"
-        ProgressBar1.Size = New Size(430, 10)
-        ProgressBar1.TabIndex = 1
         ' 
         ' BTN_Apply
         ' 
@@ -53,21 +46,34 @@ Partial Class Form1
         CB_SkipIntro.Text = "Skip Intro"
         CB_SkipIntro.UseVisualStyleBackColor = True
         ' 
+        ' LIST_LOG
+        ' 
+        LIST_LOG.BackColor = SystemColors.ButtonFace
+        LIST_LOG.BorderStyle = BorderStyle.None
+        LIST_LOG.FormattingEnabled = True
+        LIST_LOG.ItemHeight = 15
+        LIST_LOG.Location = New Point(12, 40)
+        LIST_LOG.Name = "LIST_LOG"
+        LIST_LOG.SelectionMode = SelectionMode.None
+        LIST_LOG.Size = New Size(430, 90)
+        LIST_LOG.TabIndex = 4
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(454, 132)
+        Controls.Add(LIST_LOG)
         Controls.Add(CB_SkipIntro)
         Controls.Add(BTN_Apply)
-        Controls.Add(ProgressBar1)
+        FormBorderStyle = FormBorderStyle.FixedToolWindow
         Name = "Form1"
         Text = "Dune: Awakening QOL"
         ResumeLayout(False)
         PerformLayout()
     End Sub
-    Friend WithEvents ProgressBar1 As ProgressBar
     Friend WithEvents BTN_Apply As Button
     Friend WithEvents CB_SkipIntro As CheckBox
+    Friend WithEvents LIST_LOG As ListBox
 
 End Class
