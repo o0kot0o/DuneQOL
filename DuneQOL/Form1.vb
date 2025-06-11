@@ -32,6 +32,7 @@ Public Class Form1
     End Sub
 
     Private Sub BTN_Apply_Click(sender As Object, e As EventArgs) Handles BTN_Apply.Click
+        StatusUpdate("-------------------------------------------------------")
         If CB_SkipIntro.Checked Then
             StatusUpdate("Applying Intro Skip to movies")
             Check_Rename_File(intro1, "\IntroMovie\")
@@ -52,7 +53,10 @@ Public Class Form1
             UndoSkip(intro6)
             UndoSkip(intro7)
             StatusUpdate("Finished undoing skip")
+        ElseIf CB_SkipIntro.Checked = False And CB_UnSkipIntro.Checked = False Then
+            StatusUpdate("Nothing to do")
         End If
+        StatusUpdate("-------------------------------------------------------")
     End Sub
 
     Private Sub StatusUpdate(ByVal update As String)
