@@ -25,6 +25,7 @@ Partial Class Form1
         BTN_Apply = New Button()
         CB_SkipIntro = New CheckBox()
         LIST_LOG = New ListBox()
+        CB_UnSkipIntro = New CheckBox()
         SuspendLayout()
         ' 
         ' BTN_Apply
@@ -58,11 +59,22 @@ Partial Class Form1
         LIST_LOG.Size = New Size(302, 90)
         LIST_LOG.TabIndex = 4
         ' 
+        ' CB_UnSkipIntro
+        ' 
+        CB_UnSkipIntro.AutoSize = True
+        CB_UnSkipIntro.Location = New Point(94, 12)
+        CB_UnSkipIntro.Name = "CB_UnSkipIntro"
+        CB_UnSkipIntro.Size = New Size(108, 19)
+        CB_UnSkipIntro.TabIndex = 5
+        CB_UnSkipIntro.Text = "Undo Skip Intro"
+        CB_UnSkipIntro.UseVisualStyleBackColor = True
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(446, 132)
+        Controls.Add(CB_UnSkipIntro)
         Controls.Add(LIST_LOG)
         Controls.Add(CB_SkipIntro)
         Controls.Add(BTN_Apply)
@@ -75,5 +87,6 @@ Partial Class Form1
     Friend WithEvents BTN_Apply As Button
     Friend WithEvents CB_SkipIntro As CheckBox
     Friend WithEvents LIST_LOG As ListBox
+    Friend WithEvents CB_UnSkipIntro As CheckBox
 
 End Class
