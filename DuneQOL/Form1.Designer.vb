@@ -29,9 +29,9 @@ Partial Class Form1
         ' 
         ' BTN_Apply
         ' 
-        BTN_Apply.Location = New Point(367, 81)
+        BTN_Apply.Location = New Point(320, 88)
         BTN_Apply.Name = "BTN_Apply"
-        BTN_Apply.Size = New Size(75, 23)
+        BTN_Apply.Size = New Size(114, 32)
         BTN_Apply.TabIndex = 2
         BTN_Apply.Text = "Apply"
         BTN_Apply.UseVisualStyleBackColor = True
@@ -52,17 +52,17 @@ Partial Class Form1
         LIST_LOG.BorderStyle = BorderStyle.None
         LIST_LOG.FormattingEnabled = True
         LIST_LOG.ItemHeight = 15
-        LIST_LOG.Location = New Point(12, 40)
+        LIST_LOG.Location = New Point(12, 37)
         LIST_LOG.Name = "LIST_LOG"
         LIST_LOG.SelectionMode = SelectionMode.None
-        LIST_LOG.Size = New Size(430, 90)
+        LIST_LOG.Size = New Size(302, 90)
         LIST_LOG.TabIndex = 4
         ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(454, 132)
+        ClientSize = New Size(446, 132)
         Controls.Add(LIST_LOG)
         Controls.Add(CB_SkipIntro)
         Controls.Add(BTN_Apply)

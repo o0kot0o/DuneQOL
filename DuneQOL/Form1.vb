@@ -4,6 +4,14 @@ Public Class Form1
     Dim var_SkipIntro As Boolean
     Dim gamePath As String
     Dim moviePath As String
+    Dim intro1 As String = "InitialIntro4k.bk2"
+    Dim intro2 As String = "Logo_4K_Funcom_2s.bk2"
+    Dim intro3 As String = "Logo_4K_Legendary_2s.bk2"
+    Dim intro4 As String = "Logo_4K_LevelInfinite_2s.bk2"
+    Dim intro5 As String = "Logo_4K_Unreal_2s.bk2"
+    Dim intro6 As String = "StartupUE4.bk2"
+    Dim intro7 As String = "EpilepsyInfo.bk2"
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Check for x86 or x64 System and get the correct Steam Path
         Dim steamPath As String
@@ -21,7 +29,8 @@ Public Class Form1
 
 
         gamePath = steamPath + "\steamapps\common\DuneAwakening"
-        moviePath = gamePath + "\DuneSandbox\Content\Movies"
+        moviePath = gamePath + "\DuneSandbox\Content\Movies\"
+
 
         LIST_LOG.SendToBack()
     End Sub
@@ -29,54 +38,32 @@ Public Class Form1
     Private Sub BTN_Apply_Click(sender As Object, e As EventArgs) Handles BTN_Apply.Click
         If CB_SkipIntro.Checked Then
             LIST_LOG.Items.Add("Applying Intro Skip....")
+            StatusUpdate("Applying Intro Skip to movies")
 
-            ' Check if intro already skipped
-            If File.Exists(moviePath + "\IntroMovie\InitialIntro4k.bk2") Then
-                LIST_LOG.Items.Add("Skipping InitialIntro4k.bk2")
-                My.Computer.FileSystem.RenameFile(moviePath + "\IntroMovie\InitialIntro4k.bk2", "InitialIntro4k.bk2.SKIP")
-            ElseIf File.Exists(moviePath + "\IntroMovie\InitialIntro4k.bk2.SKIP") Then
-                LIST_LOG.Items.Add("InitialIntro4k.bk2 already skipped")
-            End If
+            Check_Rename_File(intro1, "\IntroMovie\")
+            Check_Rename_File(intro2)
+            Check_Rename_File(intro3)
+            Check_Rename_File(intro4)
+            Check_Rename_File(intro5)
+            Check_Rename_File(intro6)
+            Check_Rename_File(intro7)
 
-            LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
-
-            If File.Exists(moviePath + "\Logo_4K_Funcom_2s.bk2") Then
-                LIST_LOG.Items.Add("Skipping Logo_4K_Funcom_2s.bk2")
-                My.Computer.FileSystem.RenameFile(moviePath + "\Logo_4K_Funcom_2s.bk2", "Logo_4K_Funcom_s2.bk2.SKIP")
-            ElseIf File.Exists(moviePath + "\Logo_4K_Funcom_2s.bk2.SKIP") Then
-                LIST_LOG.Items.Add("Logo_4K_Funcom_2s.bk2 already skipped")
-            End If
-
-            LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
-
-            If File.Exists(moviePath + "\Logo_4K_Legendary_2s.bk2") Then
-                LIST_LOG.Items.Add("Skipping Logo_4K_Legendary_2s.bk2")
-            ElseIf File.Exists(moviePath + "\Logo_4K_Legendary_2s.bk2.SKIP") Then
-                LIST_LOG.Items.Add("Logo_4K_Legendary_2s.bk2 already skipped")
-            End If
-
-            LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
-
-            If File.Exists(moviePath + "\Logo_4K_LevelInfinite_2s.bk2") Then
-                LIST_LOG.Items.Add("Skipping Logo_4K_LevelInfinite_2s.bk2")
-            ElseIf File.Exists(moviePath + "\Logo_4K_LevelInfinite_2s.bk2.SKIP") Then
-                LIST_LOG.Items.Add("Logo_4K_LevelInfinite_2s.bk2 already skipped")
-            End If
-
-            LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
-
-            If File.Exists(moviePath + "\Logo_4K_Unreal_2s.bk2") Then
-                LIST_LOG.Items.Add("Skipping Logo_4K_Unreal_2s.bk2")
-            ElseIf File.Exists(moviePath + "\Logo_4K_Unreal_2s.bk2.SKIP") Then
-                LIST_LOG.Items.Add("Logo_4K_Unreal_2s.bk2 already skipped")
-            End If
-
-            LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
+            StatusUpdate("Finished applying skip")
 
         End If
     End Sub
 
-    Private Sub LIST_LOG_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LIST_LOG.SelectedIndexChanged
+    Private Sub StatusUpdate(ByVal update As String)
+        LIST_LOG.Items.Add(update)
+        LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
+    End Sub
 
+    Private Sub Check_Rename_File(ByVal intro As String, Optional ByVal path As String = "")
+        If File.Exists(moviePath + path + intro) Then
+            StatusUpdate("Marking " + intro + " as skipped")
+            My.Computer.FileSystem.RenameFile(moviePath + path + intro, intro + ".SKIP")
+        ElseIf File.Exists(moviePath + path + intro + ".SKIP") Then
+            StatusUpdate(intro + " already set to skip")
+        End If
     End Sub
 End Class
