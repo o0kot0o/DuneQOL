@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Security.Cryptography.X509Certificates
 
 Public Class Form1
     Dim var_SkipIntro As Boolean
@@ -12,29 +13,43 @@ Public Class Form1
     Dim intro6 As String = "StartupUE4.bk2"
     Dim intro7 As String = "EpilepsyInfo.bk2"
 
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub GetGamePath()
         'Check for x86 or x64 System and get the correct Steam Path
         Dim steamPath As String
+        StatusUpdate("-------------------------------------------------------")
+        StatusUpdate("Looking for Steam")
+        StatusUpdate("-------------------------------------------------------")
         If System.Environment.Is64BitOperatingSystem = True Then
             steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
         Else
             steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
         End If
         If steamPath Is Nothing Then
-            MsgBox("Could not find Steam Path")
+            StatusUpdate("-------------------------------------------------------")
+            StatusUpdate("Could Not find Steam")
+            StatusUpdate("-------------------------------------------------------")
+            BTN_Apply.Enabled = False
+            CB_SkipIntro.Enabled = False
+            CB_UnSkipIntro.Enabled = False
+        Else
+            StatusUpdate("-------------------------------------------------------")
+            StatusUpdate("Steam found at " & steamPath)
+            gamePath = steamPath + "\steamapps\common\DuneAwakening"
+            moviePath = gamePath + "\DuneSandbox\Content\Movies\"
+            StatusUpdate("Found Dune at " & gamePath)
+            StatusUpdate("-------------------------------------------------------")
         End If
+    End Sub
 
-        gamePath = steamPath + "\steamapps\common\DuneAwakening"
-        moviePath = gamePath + "\DuneSandbox\Content\Movies\"
-
-
-        LIST_LOG.SendToBack()
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        GetGamePath()
     End Sub
 
     Private Sub BTN_Apply_Click(sender As Object, e As EventArgs) Handles BTN_Apply.Click
         StatusUpdate("-------------------------------------------------------")
         If CB_SkipIntro.Checked Then
             StatusUpdate("Applying Intro Skip to movies")
+            StatusUpdate("-------------------------------------------------------")
             Check_Rename_File(intro1, "\IntroMovie\")
             Check_Rename_File(intro2)
             Check_Rename_File(intro3)
@@ -45,6 +60,7 @@ Public Class Form1
             StatusUpdate("Finished applying skip")
         ElseIf CB_UnSkipIntro.Checked Then
             StatusUpdate("Undoing intro movies to skip.")
+            StatusUpdate("-------------------------------------------------------")
             UndoSkip(intro1, "\IntroMovie\")
             UndoSkip(intro2)
             UndoSkip(intro3)
