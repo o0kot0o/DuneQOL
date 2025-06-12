@@ -71,6 +71,7 @@ Public Class Form1
             StatusUpdate("Finished undoing skip")
         ElseIf CB_SkipIntro.Checked = False And CB_UnSkipIntro.Checked = False Then
             StatusUpdate("Nothing to do")
+            StatusUpdate("Please choose an option")
         End If
         StatusUpdate("-------------------------------------------------------")
     End Sub
@@ -91,10 +92,10 @@ Public Class Form1
 
     Private Sub UndoSkip(ByVal intro As String, Optional ByVal path As String = "")
         If File.Exists(moviePath + path + intro + ".SKIP") Then
-            StatusUpdate("Resetting " + intro + " to play.")
+            StatusUpdate("Resetting " + intro + " to show.")
             My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", intro)
         ElseIf File.Exists(moviePath + path + intro) Then
-            StatusUpdate(intro + " already set to play")
+            StatusUpdate(intro + " already set to show")
         End If
     End Sub
 
