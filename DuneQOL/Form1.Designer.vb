@@ -30,7 +30,7 @@ Partial Class Form1
         ' 
         ' BTN_Apply
         ' 
-        BTN_Apply.Location = New Point(320, 167)
+        BTN_Apply.Location = New Point(387, 253)
         BTN_Apply.Name = "BTN_Apply"
         BTN_Apply.Size = New Size(114, 32)
         BTN_Apply.TabIndex = 2
@@ -56,7 +56,7 @@ Partial Class Form1
         LIST_LOG.Location = New Point(12, 37)
         LIST_LOG.Name = "LIST_LOG"
         LIST_LOG.SelectionMode = SelectionMode.None
-        LIST_LOG.Size = New Size(302, 165)
+        LIST_LOG.Size = New Size(489, 210)
         LIST_LOG.TabIndex = 4
         ' 
         ' CB_UnSkipIntro
@@ -73,7 +73,7 @@ Partial Class Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(446, 211)
+        ClientSize = New Size(513, 295)
         Controls.Add(CB_UnSkipIntro)
         Controls.Add(LIST_LOG)
         Controls.Add(CB_SkipIntro)
