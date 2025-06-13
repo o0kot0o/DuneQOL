@@ -1,11 +1,17 @@
 ﻿Imports System.IO
 Imports System.Security.Cryptography.X509Certificates
+Imports System.Text.Json.Nodes
+Imports Newtonsoft.Json
+Imports Newtonsoft.Json.Linq
 
 Public Class Form1
     Dim var_SkipIntro As Boolean
     Dim Seperator As String = "-------------------------------------------------------------------------------------------------"
+    Dim manifestFile As String = "appmanifest_1172710.acf"
     Dim gamePath As String
     Dim moviePath As String
+    Dim grace_gamePath As String = "D:\SteamLibrary\steamapps\common\DuneAwakening"
+    Dim grace_moviePath As String = grace_gamePath + "\DuneSandbox\Content\Movies\"
     Dim intro1 As String = "InitialIntro4k.bk2"
     Dim intro2 As String = "Logo_4K_Funcom_2s.bk2"
     Dim intro3 As String = "Logo_4K_Legendary_2s.bk2"
@@ -39,6 +45,7 @@ Public Class Form1
             StatusUpdate(Seperator)
         End If
     End Sub
+
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         GetGamePath()
@@ -81,25 +88,47 @@ Public Class Form1
         LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
     End Sub
 
-    Private Sub Check_Rename_File(ByVal intro As String, Optional ByVal path As String = "")
-        If File.Exists(moviePath + path + intro) Then
-            StatusUpdate("Marking " + intro + " as skipped")
-            My.Computer.FileSystem.RenameFile(moviePath + path + intro, intro + ".SKIP")
-        ElseIf File.Exists(moviePath + path + intro + ".SKIP") Then
-            StatusUpdate(intro + " already set to skip")
+    Private Sub Check_Rename_File(ByVal intro As String, Optional ByVal path As String = "", Optional ByVal isgrace As Boolean = False)
+        If isgrace Then
+            If File.Exists(grace_moviePath + path + intro) Then
+                StatusUpdate("Marking " + intro + " as skipped")
+                My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro, intro + ".SKIP")
+            ElseIf File.Exists(grace_moviePath + path + intro + ".SKIP") Then
+                StatusUpdate(intro + " already set to skip")
+            Else
+                StatusUpdate(intro + " could not be found")
+            End If
         Else
-            StatusUpdate(intro + " could not be found")
+            If File.Exists(moviePath + path + intro) Then
+                StatusUpdate("Marking " + intro + " as skipped")
+                My.Computer.FileSystem.RenameFile(moviePath + path + intro, intro + ".SKIP")
+            ElseIf File.Exists(moviePath + path + intro + ".SKIP") Then
+                StatusUpdate(intro + " already set to skip")
+            Else
+                StatusUpdate(intro + " could not be found")
+            End If
         End If
     End Sub
 
-    Private Sub UndoSkip(ByVal intro As String, Optional ByVal path As String = "")
-        If File.Exists(moviePath + path + intro + ".SKIP") Then
-            StatusUpdate("Resetting " + intro + " to show.")
-            My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", intro)
-        ElseIf File.Exists(moviePath + path + intro) Then
-            StatusUpdate(intro + " already set to show")
+    Private Sub UndoSkip(ByVal intro As String, Optional ByVal path As String = "", Optional ByVal isgrace As Boolean = False)
+        If isgrace Then
+            If File.Exists(grace_moviePath + path + intro + ".SKIP") Then
+                StatusUpdate("Resetting " + intro + " to show.")
+                My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro + ".SKIP", intro)
+            ElseIf File.Exists(grace_moviePath + path + intro) Then
+                StatusUpdate(intro + " already set to show")
+            Else
+                StatusUpdate(intro + " could not be found")
+            End If
         Else
-            StatusUpdate(intro + " could not be found")
+            If File.Exists(moviePath + path + intro + ".SKIP") Then
+                StatusUpdate("Resetting " + intro + " to show.")
+                My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", intro)
+            ElseIf File.Exists(moviePath + path + intro) Then
+                StatusUpdate(intro + " already set to show")
+            Else
+                StatusUpdate(intro + " could not be found")
+            End If
         End If
     End Sub
 
@@ -113,5 +142,37 @@ Public Class Form1
         If CB_UnSkipIntro.Checked Then
             CB_SkipIntro.Checked = False
         End If
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles BTN_Grace.Click
+        LIST_LOG.Items.Clear()
+        StatusUpdate(Seperator)
+        If CB_SkipIntro.Checked Then
+            StatusUpdate("Applying Intro Skip to movies")
+            StatusUpdate(Seperator)
+            Check_Rename_File(intro1, "\IntroMovie\", isgrace:=True)
+            Check_Rename_File(intro2, isgrace:=True)
+            Check_Rename_File(intro3, isgrace:=True)
+            Check_Rename_File(intro4, isgrace:=True)
+            Check_Rename_File(intro5, isgrace:=True)
+            Check_Rename_File(intro6, isgrace:=True)
+            Check_Rename_File(intro7, isgrace:=True)
+            StatusUpdate("Finished applying skip")
+        ElseIf CB_UnSkipIntro.Checked Then
+            StatusUpdate("Removing intro movies skip.")
+            StatusUpdate(Seperator)
+            UndoSkip(intro1, "\IntroMovie\", True)
+            UndoSkip(intro2, isgrace:=True)
+            UndoSkip(intro3, isgrace:=True)
+            UndoSkip(intro4, isgrace:=True)
+            UndoSkip(intro5, isgrace:=True)
+            UndoSkip(intro6, isgrace:=True)
+            UndoSkip(intro7, isgrace:=True)
+            StatusUpdate("Finished undoing skip")
+        ElseIf CB_SkipIntro.Checked = False And CB_UnSkipIntro.Checked = False Then
+            StatusUpdate("Nothing to do")
+            StatusUpdate("Please choose an option")
+        End If
+        StatusUpdate(Seperator)
     End Sub
 End Class

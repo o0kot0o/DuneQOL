@@ -26,6 +26,7 @@ Partial Class Form1
         CB_SkipIntro = New CheckBox()
         LIST_LOG = New ListBox()
         CB_UnSkipIntro = New CheckBox()
+        BTN_Grace = New Button()
         SuspendLayout()
         ' 
         ' BTN_Apply
@@ -69,11 +70,21 @@ Partial Class Form1
         CB_UnSkipIntro.Text = "Undo Skip Intro"
         CB_UnSkipIntro.UseVisualStyleBackColor = True
         ' 
+        ' BTN_Grace
+        ' 
+        BTN_Grace.Location = New Point(289, 253)
+        BTN_Grace.Name = "BTN_Grace"
+        BTN_Grace.Size = New Size(92, 32)
+        BTN_Grace.TabIndex = 6
+        BTN_Grace.Text = "Grace's Button"
+        BTN_Grace.UseVisualStyleBackColor = True
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(513, 295)
+        Controls.Add(BTN_Grace)
         Controls.Add(CB_UnSkipIntro)
         Controls.Add(LIST_LOG)
         Controls.Add(CB_SkipIntro)
@@ -89,5 +100,6 @@ Partial Class Form1
     Friend WithEvents CB_SkipIntro As CheckBox
     Friend WithEvents LIST_LOG As ListBox
     Friend WithEvents CB_UnSkipIntro As CheckBox
+    Friend WithEvents BTN_Grace As Button
 
 End Class
