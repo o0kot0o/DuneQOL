@@ -1,8 +1,5 @@
 ﻿Imports System.IO
-Imports System.Security.Cryptography.X509Certificates
-Imports System.Text.Json.Nodes
-Imports Newtonsoft.Json
-Imports Newtonsoft.Json.Linq
+
 
 Public Class Form1
     Dim var_SkipIntro As Boolean
