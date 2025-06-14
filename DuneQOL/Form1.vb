@@ -26,11 +26,12 @@ Public Class Form1
         StatusUpdate(Seperator)
         StatusUpdate("Looking for Steam")
         StatusUpdate(Seperator)
-        If System.Environment.Is64BitOperatingSystem = True Then
-            steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
-        Else
-            steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
-        End If
+        steamPath = GetSteamPath()
+        'If System.Environment.Is64BitOperatingSystem = True Then
+        'steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
+        'Else
+        'steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
+        'End If
         If steamPath Is Nothing Then
             StatusUpdate("Could Not find Steam")
             StatusUpdate(Seperator)
@@ -47,6 +48,15 @@ Public Class Form1
         End If
     End Sub
 
+    Private Function GetSteamPath()
+        If System.Environment.Is64BitOperatingSystem Then
+            If System.Environment.Is64BitOperatingSystem = True Then
+                Return My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
+            Else
+                Return My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
+            End If
+        End If
+    End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         BTN_PlayGame.Enabled = False
@@ -80,7 +90,7 @@ Public Class Form1
             StatusUpdate("Finished undoing skip")
         ElseIf CB_SkipIntro.Checked = False And CB_UnSkipIntro.Checked = False Then
             StatusUpdate("Nothing to do")
-            StatusUpdate("Please choose an option")
+            StatusUpdate("Please choose an option from above.")
         End If
         StatusUpdate(Seperator)
     End Sub
@@ -91,47 +101,47 @@ Public Class Form1
     End Sub
 
     Private Sub Check_Rename_File(ByVal intro As String, Optional ByVal path As String = "", Optional ByVal isgrace As Boolean = False)
-        If isgrace Then
-            If File.Exists(grace_moviePath + path + intro) Then
-                StatusUpdate("Marking " + intro + " as skipped")
-                My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro, intro + ".SKIP")
-            ElseIf File.Exists(grace_moviePath + path + intro + ".SKIP") Then
-                StatusUpdate(intro + " already set to skip")
-            Else
-                StatusUpdate(intro + " could not be found")
-            End If
+        'If isgrace Then
+        '    If File.Exists(grace_moviePath + path + intro) Then
+        '        StatusUpdate("Marking " + intro + " as skipped")
+        '        My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro, intro + ".SKIP")
+        '    ElseIf File.Exists(grace_moviePath + path + intro + ".SKIP") Then
+        '        StatusUpdate(intro + " already set to skip")
+        '    Else
+        '        StatusUpdate(intro + " could not be found")
+        '    End If
+        'Else
+        If File.Exists(moviePath + path + intro) Then
+            StatusUpdate("Marking " + intro + " as skipped")
+            My.Computer.FileSystem.RenameFile(moviePath + path + intro, intro + ".SKIP")
+        ElseIf File.Exists(moviePath + path + intro + ".SKIP") Then
+            StatusUpdate(intro + " already set to skip")
         Else
-            If File.Exists(moviePath + path + intro) Then
-                StatusUpdate("Marking " + intro + " as skipped")
-                My.Computer.FileSystem.RenameFile(moviePath + path + intro, intro + ".SKIP")
-            ElseIf File.Exists(moviePath + path + intro + ".SKIP") Then
-                StatusUpdate(intro + " already set to skip")
-            Else
-                StatusUpdate(intro + " could not be found")
-            End If
+            StatusUpdate(intro + " could not be found")
         End If
+        'End If
     End Sub
 
     Private Sub UndoSkip(ByVal intro As String, Optional ByVal path As String = "", Optional ByVal isgrace As Boolean = False)
-        If isgrace Then
-            If File.Exists(grace_moviePath + path + intro + ".SKIP") Then
-                StatusUpdate("Resetting " + intro + " to show.")
-                My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro + ".SKIP", intro)
-            ElseIf File.Exists(grace_moviePath + path + intro) Then
-                StatusUpdate(intro + " already set to show")
-            Else
-                StatusUpdate(intro + " could not be found")
-            End If
+        'If isgrace Then
+        '    If File.Exists(grace_moviePath + path + intro + ".SKIP") Then
+        '        StatusUpdate("Resetting " + intro + " to show.")
+        '        My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro + ".SKIP", intro)
+        '    ElseIf File.Exists(grace_moviePath + path + intro) Then
+        '        StatusUpdate(intro + " already set to show")
+        '    Else
+        '        StatusUpdate(intro + " could not be found")
+        '    End If
+        'Else
+        If File.Exists(moviePath + path + intro + ".SKIP") Then
+            StatusUpdate("Resetting " + intro + " to show.")
+            My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", intro)
+        ElseIf File.Exists(moviePath + path + intro) Then
+            StatusUpdate(intro + " already set to show")
         Else
-            If File.Exists(moviePath + path + intro + ".SKIP") Then
-                StatusUpdate("Resetting " + intro + " to show.")
-                My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", intro)
-            ElseIf File.Exists(moviePath + path + intro) Then
-                StatusUpdate(intro + " already set to show")
-            Else
-                StatusUpdate(intro + " could not be found")
-            End If
+            StatusUpdate(intro + " could not be found")
         End If
+        'End If
     End Sub
 
     Private Sub CB_SkipIntro_CheckedChanged(sender As Object, e As EventArgs) Handles CB_SkipIntro.CheckedChanged
@@ -208,6 +218,16 @@ Public Class Form1
     End Function
 
     Private Sub BTN_PlayGame_Click(sender As Object, e As EventArgs) Handles BTN_PlayGame.Click
-        Process.Start(gamePath + "\DuneSandbox\Binaries\Win64\DuneSandbox_BE.exe", "-nosplash -BattlEye -continuesession %command%")
+        If File.Exists(gamePath + "\DuneSandbox\Binaries\Win64\DuneSandbox_BE.exe") Then
+            LIST_LOG.Items.Clear()
+            StatusUpdate(Seperator)
+            StatusUpdate("Starting Dune")
+            StatusUpdate("Please Wait...")
+            Process.Start(gamePath + "\DuneSandbox\Binaries\Win64\DuneSandbox_BE.exe", "-nosplash -BattlEye -continuesession %command%")
+        Else
+            LIST_LOG.Items.Clear()
+            StatusUpdate(Seperator)
+            StatusUpdate("Could not find DuneSandbox_BE.exe")
+        End If
     End Sub
 End Class
