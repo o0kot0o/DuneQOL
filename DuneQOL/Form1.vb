@@ -39,6 +39,9 @@ Public Class Form1
             StatusUpdate("Steam found at " & steamPath)
             'gamePath = steamPath + "\steamapps\common\DuneAwakening"
             gamePath = GetInstallDir(steamPath + "\steamapps\" + manifestFile)
+            If gamePath = Nothing Then
+                gamePath = GetInstallDir("D:\SteamLibrary\steamapps\" + manifestFile)
+            End If
             moviePath = gamePath + "\DuneSandbox\Content\Movies\"
             'StatusUpdate("Found Dune at " & gamePath)
             StatusUpdate(Seperator)
