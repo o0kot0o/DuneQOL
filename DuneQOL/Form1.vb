@@ -8,6 +8,7 @@ Public Class Form1
     Dim var_SkipIntro As Boolean
     Dim Seperator As String = "-------------------------------------------------------------------------------------------------"
     Dim manifestFile As String = "appmanifest_1172710.acf"
+    Dim steamPath As String
     Dim gamePath As String
     Dim moviePath As String
     Dim grace_gamePath As String = "D:\SteamLibrary\steamapps\common\DuneAwakening"
@@ -22,7 +23,6 @@ Public Class Form1
 
     Private Sub GetGamePath()
         'Check for x86 or x64 System and get the correct Steam Path
-        Dim steamPath As String
         StatusUpdate(Seperator)
         StatusUpdate("Looking for Steam")
         StatusUpdate(Seperator)
@@ -39,15 +39,17 @@ Public Class Form1
             CB_UnSkipIntro.Enabled = False
         Else
             StatusUpdate("Steam found at " & steamPath)
-            gamePath = steamPath + "\steamapps\common\DuneAwakening"
+            'gamePath = steamPath + "\steamapps\common\DuneAwakening"
+            gamePath = GetInstallDir(steamPath + "\steamapps\" + manifestFile)
             moviePath = gamePath + "\DuneSandbox\Content\Movies\"
-            StatusUpdate("Found Dune at " & gamePath)
+            'StatusUpdate("Found Dune at " & gamePath)
             StatusUpdate(Seperator)
         End If
     End Sub
 
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        BTN_PlayGame.Enabled = False
         GetGamePath()
     End Sub
 
@@ -174,5 +176,38 @@ Public Class Form1
             StatusUpdate("Please choose an option")
         End If
         StatusUpdate(Seperator)
+    End Sub
+
+    Private Function GetInstallDir(ByVal manifestfile As String)
+        Dim filePath As String = manifestfile
+        Dim installdir As String = ""
+
+        If File.Exists(filePath) Then
+            For Each line As String In File.ReadLines(filePath)
+                If line.Trim().StartsWith("""installdir""") Then
+                    ' Extract the value using split and clean-up
+                    Dim parts() As String = line.Split(ControlChars.Quote)
+                    If parts.Length >= 4 Then
+                        installdir = parts(3) ' The value is the 4th quoted item
+                        Exit For
+                    End If
+                End If
+            Next
+            If File.Exists(steamPath + "\steamapps\common\" + installdir + "\DuneSandbox.exe") Then
+                BTN_PlayGame.Enabled = True
+                StatusUpdate("Install Directory: " + steamPath + "\steamapps\common\" + installdir)
+                Return steamPath + "\steamapps\common\" + installdir
+            Else
+                StatusUpdate("Could not find install directory: " + filePath)
+                Return ""
+            End If
+        Else
+            StatusUpdate("Could not find install directory: " + filePath)
+        End If
+        Return ""
+    End Function
+
+    Private Sub BTN_PlayGame_Click(sender As Object, e As EventArgs) Handles BTN_PlayGame.Click
+        Process.Start(gamePath + "\DuneSandbox\Binaries\Win64\DuneSandbox_BE.exe", "-nosplash -BattlEye -continuesession %command%")
     End Sub
 End Class

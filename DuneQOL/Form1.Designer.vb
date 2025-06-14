@@ -27,6 +27,7 @@ Partial Class Form1
         LIST_LOG = New ListBox()
         CB_UnSkipIntro = New CheckBox()
         BTN_Grace = New Button()
+        BTN_PlayGame = New Button()
         SuspendLayout()
         ' 
         ' BTN_Apply
@@ -78,12 +79,23 @@ Partial Class Form1
         BTN_Grace.TabIndex = 6
         BTN_Grace.Text = "Grace's Button"
         BTN_Grace.UseVisualStyleBackColor = True
+        BTN_Grace.Visible = False
+        ' 
+        ' BTN_PlayGame
+        ' 
+        BTN_PlayGame.Location = New Point(12, 253)
+        BTN_PlayGame.Name = "BTN_PlayGame"
+        BTN_PlayGame.Size = New Size(271, 32)
+        BTN_PlayGame.TabIndex = 7
+        BTN_PlayGame.Text = "Play Dune"
+        BTN_PlayGame.UseVisualStyleBackColor = True
         ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(513, 295)
+        Controls.Add(BTN_PlayGame)
         Controls.Add(BTN_Grace)
         Controls.Add(CB_UnSkipIntro)
         Controls.Add(LIST_LOG)
@@ -101,5 +113,6 @@ Partial Class Form1
     Friend WithEvents LIST_LOG As ListBox
     Friend WithEvents CB_UnSkipIntro As CheckBox
     Friend WithEvents BTN_Grace As Button
+    Friend WithEvents BTN_PlayGame As Button
 
 End Class
