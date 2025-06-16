@@ -71,7 +71,9 @@ Public Class Form1
             Else
                 Return My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
             End If
+            Return ""
         End If
+        Return ""
     End Function
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -266,7 +268,9 @@ Public Class Form1
                     configFile.Close()
                     Return folderPath
                 End If
+                Return ""
             End Using
         End If
+        Return ""
     End Function
 End Class
