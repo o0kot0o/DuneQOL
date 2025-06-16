@@ -1,4 +1,10 @@
-﻿Imports System.IO
+﻿Imports System.ComponentModel.Design
+Imports System.Configuration
+Imports System.DirectoryServices.ActiveDirectory
+Imports System.IO
+Imports System.Runtime.CompilerServices
+Imports System.Windows.Forms.Design
+Imports System.Xml
 
 
 Public Class Form1
@@ -24,11 +30,6 @@ Public Class Form1
         StatusUpdate("Looking for Steam")
         StatusUpdate(Seperator)
         steamPath = GetSteamPath()
-        'If System.Environment.Is64BitOperatingSystem = True Then
-        'steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Valve\Steam", "InstallPath", Nothing)
-        'Else
-        'steamPath = My.Computer.Registry.GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Valve\Steam", "InstallPath", Nothing)
-        'End If
         If steamPath Is Nothing Then
             StatusUpdate("Could Not find Steam")
             StatusUpdate(Seperator)
@@ -36,15 +37,30 @@ Public Class Form1
             CB_SkipIntro.Enabled = False
             CB_UnSkipIntro.Enabled = False
         Else
-            StatusUpdate("Steam found at " & steamPath)
-            'gamePath = steamPath + "\steamapps\common\DuneAwakening"
-            gamePath = GetInstallDir(steamPath + "\steamapps\" + manifestFile)
-            If gamePath = Nothing Then
-                gamePath = GetInstallDir("D:\SteamLibrary\steamapps\" + manifestFile)
+            If 0 Then
+                'StatusUpdate("Steam found at " & steamPath)
+                ''gamePath = steamPath + "\steamapps\common\DuneAwakening"
+                'gamePath = GetInstallDir(steamPath + "\steamapps\" + manifestFile)
+                'If gamePath = Nothing Then
+                '    gamePath = GetInstallDir("D:\SteamLibrary\steamapps\" + manifestFile)
+                'End If
+                'moviePath = gamePath + "\DuneSandbox\Content\Movies\"
+                ''StatusUpdate("Found Dune at " & gamePath)
+                'StatusUpdate(Seperator)
             End If
-            moviePath = gamePath + "\DuneSandbox\Content\Movies\"
-            'StatusUpdate("Found Dune at " & gamePath)
-            StatusUpdate(Seperator)
+            StatusUpdate("Steam Found at " + steamPath)
+            gamePath = LoadConfigFile()
+            If gamePath Is Nothing Then
+                StatusUpdate("Did not select a folder!")
+                StatusUpdate("Exit and try again!")
+            Else
+                If File.Exists(gamePath + "\DuneSandbox.exe") Then
+                    BTN_PlayGame.Enabled = True
+                    StatusUpdate("Game Found at " + gamePath)
+                    moviePath = gamePath + "\DuneSandbox\Content\Movies\"
+                    StatusUpdate(Seperator)
+                End If
+            End If
         End If
     End Sub
 
@@ -61,6 +77,7 @@ Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         BTN_PlayGame.Enabled = False
         GetGamePath()
+        'MsgBox(LoadConfigFile())
     End Sub
 
     Private Sub BTN_Apply_Click(sender As Object, e As EventArgs) Handles BTN_Apply.Click
@@ -156,7 +173,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles BTN_Grace.Click
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
         LIST_LOG.Items.Clear()
         StatusUpdate(Seperator)
         If CB_SkipIntro.Checked Then
@@ -230,4 +247,26 @@ Public Class Form1
             StatusUpdate("Could not find DuneSandbox_BE.exe")
         End If
     End Sub
+
+    Private Function LoadConfigFile()
+        If File.Exists("config.Conf") Then
+            Dim configFile As IO.StreamReader = IO.File.OpenText("config.conf")
+            Dim folderPath As String = configFile.ReadLine()
+            configFile.Close()
+            Return folderPath
+        Else
+            Using FolderBrowserDialog As New FolderBrowserDialog()
+                FolderBrowserDialog.Description = "Select DuneAwakening Folder"
+                Dim result As DialogResult = FolderBrowserDialog.ShowDialog()
+                If result = DialogResult.OK Then
+                    Dim folderPath As String = FolderBrowserDialog.SelectedPath
+                    Dim configFile As IO.StreamWriter
+                    configFile = My.Computer.FileSystem.OpenTextFileWriter("config.conf", True)
+                    configFile.WriteLine(folderPath)
+                    configFile.Close()
+                    Return folderPath
+                End If
+            End Using
+        End If
+    End Function
 End Class
