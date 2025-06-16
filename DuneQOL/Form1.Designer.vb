@@ -22,6 +22,7 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         BTN_Apply = New Button()
         CB_SkipIntro = New CheckBox()
         LIST_LOG = New ListBox()
@@ -101,6 +102,7 @@ Partial Class Form1
         Controls.Add(CB_SkipIntro)
         Controls.Add(BTN_Apply)
         FormBorderStyle = FormBorderStyle.FixedSingle
+        Icon = CType(resources.GetObject("$this.Icon"), Icon)
         Name = "Form1"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Dune: Awakening QOL"
