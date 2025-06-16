@@ -27,6 +27,7 @@ Partial Class Form1
         LIST_LOG = New ListBox()
         CB_UnSkipIntro = New CheckBox()
         BTN_PlayGame = New Button()
+        BTN_SetGameFolder = New Button()
         SuspendLayout()
         ' 
         ' BTN_Apply
@@ -79,11 +80,21 @@ Partial Class Form1
         BTN_PlayGame.Text = "Play Dune"
         BTN_PlayGame.UseVisualStyleBackColor = True
         ' 
+        ' BTN_SetGameFolder
+        ' 
+        BTN_SetGameFolder.Location = New Point(208, 9)
+        BTN_SetGameFolder.Name = "BTN_SetGameFolder"
+        BTN_SetGameFolder.Size = New Size(293, 23)
+        BTN_SetGameFolder.TabIndex = 8
+        BTN_SetGameFolder.Text = "Select Game Folder"
+        BTN_SetGameFolder.UseVisualStyleBackColor = True
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(513, 295)
+        Controls.Add(BTN_SetGameFolder)
         Controls.Add(BTN_PlayGame)
         Controls.Add(CB_UnSkipIntro)
         Controls.Add(LIST_LOG)
@@ -101,5 +112,6 @@ Partial Class Form1
     Friend WithEvents LIST_LOG As ListBox
     Friend WithEvents CB_UnSkipIntro As CheckBox
     Friend WithEvents BTN_PlayGame As Button
+    Friend WithEvents BTN_SetGameFolder As Button
 
 End Class

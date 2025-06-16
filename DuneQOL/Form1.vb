@@ -2,6 +2,7 @@
 Imports System.Configuration
 Imports System.DirectoryServices.ActiveDirectory
 Imports System.IO
+Imports System.Reflection
 Imports System.Runtime.CompilerServices
 Imports System.Windows.Forms.Design
 Imports System.Xml
@@ -56,9 +57,16 @@ Public Class Form1
             Else
                 If File.Exists(gamePath + "\DuneSandbox.exe") Then
                     BTN_PlayGame.Enabled = True
+                    BTN_Apply.Enabled = True
                     StatusUpdate("Game Found at " + gamePath)
                     moviePath = gamePath + "\DuneSandbox\Content\Movies\"
                     StatusUpdate(Seperator)
+                Else
+                    BTN_PlayGame.Enabled = False
+                    BTN_Apply.Enabled = False
+                    StatusUpdate("Could not find game at")
+                    StatusUpdate(gamePath)
+                    StatusUpdate("Select a new game folder")
                 End If
             End If
         End If
@@ -270,7 +278,45 @@ Public Class Form1
                 End If
                 Return ""
             End Using
+            Return ""
         End If
         Return ""
     End Function
+
+    Private Sub BTN_SetGameFolder_Click(sender As Object, e As EventArgs) Handles BTN_SetGameFolder.Click
+        LIST_LOG.Items.Clear()
+        Using FolderBrowserDialog As New FolderBrowserDialog()
+            FolderBrowserDialog.Description = "Select DuneAwakening Folder"
+            Dim result As DialogResult = FolderBrowserDialog.ShowDialog()
+            If result = DialogResult.OK Then
+                If File.Exists("config.conf") Then
+                    My.Computer.FileSystem.DeleteFile("config.conf")
+                End If
+                Dim folderPath As String = FolderBrowserDialog.SelectedPath
+                Dim configFile As IO.StreamWriter
+                configFile = My.Computer.FileSystem.OpenTextFileWriter("config.conf", True)
+                configFile.WriteLine(folderPath)
+                configFile.Close()
+                gamePath = folderPath
+                If gamePath Is Nothing Then
+                    StatusUpdate("Did not select a folder!")
+                    StatusUpdate("Exit and try again!")
+                Else
+                    If File.Exists(gamePath + "\DuneSandbox.exe") Then
+                        BTN_PlayGame.Enabled = True
+                        BTN_Apply.Enabled = True
+                        StatusUpdate("Game Found at " + gamePath)
+                        moviePath = gamePath + "\DuneSandbox\Content\Movies\"
+                        StatusUpdate(Seperator)
+                    Else
+                        BTN_PlayGame.Enabled = False
+                        BTN_Apply.Enabled = False
+                        StatusUpdate("Could not find game at")
+                        StatusUpdate(gamePath)
+                        StatusUpdate("Select a new game folder")
+                    End If
+                End If
+            End If
+        End Using
+    End Sub
 End Class
