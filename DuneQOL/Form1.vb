@@ -38,17 +38,6 @@ Public Class Form1
             CB_SkipIntro.Enabled = False
             CB_UnSkipIntro.Enabled = False
         Else
-            If 0 Then
-                'StatusUpdate("Steam found at " & steamPath)
-                ''gamePath = steamPath + "\steamapps\common\DuneAwakening"
-                'gamePath = GetInstallDir(steamPath + "\steamapps\" + manifestFile)
-                'If gamePath = Nothing Then
-                '    gamePath = GetInstallDir("D:\SteamLibrary\steamapps\" + manifestFile)
-                'End If
-                'moviePath = gamePath + "\DuneSandbox\Content\Movies\"
-                ''StatusUpdate("Found Dune at " & gamePath)
-                'StatusUpdate(Seperator)
-            End If
             StatusUpdate("Steam Found at " + steamPath)
             gamePath = LoadConfigFile()
             If gamePath Is Nothing Then
@@ -128,16 +117,6 @@ Public Class Form1
     End Sub
 
     Private Sub Check_Rename_File(ByVal intro As String, Optional ByVal path As String = "", Optional ByVal isgrace As Boolean = False)
-        'If isgrace Then
-        '    If File.Exists(grace_moviePath + path + intro) Then
-        '        StatusUpdate("Marking " + intro + " as skipped")
-        '        My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro, intro + ".SKIP")
-        '    ElseIf File.Exists(grace_moviePath + path + intro + ".SKIP") Then
-        '        StatusUpdate(intro + " already set to skip")
-        '    Else
-        '        StatusUpdate(intro + " could not be found")
-        '    End If
-        'Else
         If File.Exists(moviePath + path + intro) Then
             StatusUpdate("Marking " + intro + " as skipped")
             My.Computer.FileSystem.RenameFile(moviePath + path + intro, intro + ".SKIP")
@@ -215,35 +194,6 @@ Public Class Form1
         StatusUpdate(Seperator)
     End Sub
 
-    Private Function GetInstallDir(ByVal manifestfile As String)
-        Dim filePath As String = manifestfile
-        Dim installdir As String = ""
-
-        If File.Exists(filePath) Then
-            For Each line As String In File.ReadLines(filePath)
-                If line.Trim().StartsWith("""installdir""") Then
-                    ' Extract the value using split and clean-up
-                    Dim parts() As String = line.Split(ControlChars.Quote)
-                    If parts.Length >= 4 Then
-                        installdir = parts(3) ' The value is the 4th quoted item
-                        Exit For
-                    End If
-                End If
-            Next
-            If File.Exists(steamPath + "\steamapps\common\" + installdir + "\DuneSandbox.exe") Then
-                BTN_PlayGame.Enabled = True
-                StatusUpdate("Install Directory: " + steamPath + "\steamapps\common\" + installdir)
-                Return steamPath + "\steamapps\common\" + installdir
-            Else
-                StatusUpdate("Could not find install directory: " + filePath)
-                Return ""
-            End If
-        Else
-            StatusUpdate("Could not find install directory: " + filePath)
-        End If
-        Return ""
-    End Function
-
     Private Sub BTN_PlayGame_Click(sender As Object, e As EventArgs) Handles BTN_PlayGame.Click
         If File.Exists(gamePath + "\DuneSandbox\Binaries\Win64\DuneSandbox_BE.exe") Then
             LIST_LOG.Items.Clear()
@@ -259,7 +209,7 @@ Public Class Form1
     End Sub
 
     Private Function LoadConfigFile()
-        If File.Exists("config.Conf") Then
+        If File.Exists("config.conf") Then
             Dim configFile As IO.StreamReader = IO.File.OpenText("config.conf")
             Dim folderPath As String = configFile.ReadLine()
             configFile.Close()
