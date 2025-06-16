@@ -129,16 +129,6 @@ Public Class Form1
     End Sub
 
     Private Sub UndoSkip(ByVal intro As String, Optional ByVal path As String = "", Optional ByVal isgrace As Boolean = False)
-        'If isgrace Then
-        '    If File.Exists(grace_moviePath + path + intro + ".SKIP") Then
-        '        StatusUpdate("Resetting " + intro + " to show.")
-        '        My.Computer.FileSystem.RenameFile(grace_moviePath + path + intro + ".SKIP", intro)
-        '    ElseIf File.Exists(grace_moviePath + path + intro) Then
-        '        StatusUpdate(intro + " already set to show")
-        '    Else
-        '        StatusUpdate(intro + " could not be found")
-        '    End If
-        'Else
         If File.Exists(moviePath + path + intro + ".SKIP") Then
             StatusUpdate("Resetting " + intro + " to show.")
             My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", intro)
