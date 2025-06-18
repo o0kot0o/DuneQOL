@@ -40,7 +40,6 @@ Public Class Form1
             Next
             StatusUpdate("Finished undoing skip")
         ElseIf CB_SkipIntro.Checked = False And CB_UnSkipIntro.Checked = False Then
-            StatusUpdate("Nothing to do")
             StatusUpdate("Please choose an option from above.")
         End If
         StatusUpdate(Seperator)
@@ -51,26 +50,26 @@ Public Class Form1
         LIST_LOG.TopIndex = LIST_LOG.Items.Count - 1
     End Sub
 
-    Private Sub Check_Rename_File(ByVal intro As String, Optional ByVal path As String = "")
-        If File.Exists(moviePath + path + intro) Then
-            StatusUpdate("Marking " + intro + " as skipped")
-            My.Computer.FileSystem.RenameFile(moviePath + path + intro, IO.Path.GetFileName(intro) + ".SKIP")
-        ElseIf File.Exists(moviePath + path + intro + ".SKIP") Then
-            StatusUpdate(intro + " already set to skip")
+    Private Sub Check_Rename_File(ByVal intro As String)
+        If File.Exists(moviePath + intro) Then
+            StatusUpdate("Marking " + IO.Path.GetFileName(intro) + " as skipped")
+            My.Computer.FileSystem.RenameFile(moviePath + intro, IO.Path.GetFileName(intro) + ".SKIP")
+        ElseIf File.Exists(moviePath + intro + ".SKIP") Then
+            StatusUpdate(IO.Path.GetFileName(intro) + " already set to skip")
         Else
-            StatusUpdate(intro + " could not be found")
+            StatusUpdate(IO.Path.GetFileName(intro) + " could not be found")
         End If
         'End If
     End Sub
 
-    Private Sub UndoSkip(ByVal intro As String, Optional ByVal path As String = "")
-        If File.Exists(moviePath + path + intro + ".SKIP") Then
-            StatusUpdate("Resetting " + intro + " to show.")
-            My.Computer.FileSystem.RenameFile(moviePath + path + intro + ".SKIP", IO.Path.GetFileName(intro))
-        ElseIf File.Exists(moviePath + path + intro) Then
-            StatusUpdate(intro + " already set to show")
+    Private Sub UndoSkip(ByVal intro As String)
+        If File.Exists(moviePath + intro + ".SKIP") Then
+            StatusUpdate("Resetting " + IO.Path.GetFileName(intro) + " to show.")
+            My.Computer.FileSystem.RenameFile(moviePath + intro + ".SKIP", IO.Path.GetFileName(intro))
+        ElseIf File.Exists(moviePath + intro) Then
+            StatusUpdate(IO.Path.GetFileName(intro) + " already set to show")
         Else
-            StatusUpdate(intro + " could not be found")
+            StatusUpdate(IO.Path.GetFileName(intro) + " could not be found")
         End If
         'End If
     End Sub
@@ -128,6 +127,9 @@ Public Class Form1
 
     Private Sub BTN_SetGameFolder_Click(sender As Object, e As EventArgs) Handles BTN_SetGameFolder.Click
         LIST_LOG.Items.Clear()
+        StatusUpdate(Seperator)
+        StatusUpdate("Find the DuneAwakening folder")
+        StatusUpdate(Seperator)
         Using FolderBrowserDialog As New FolderBrowserDialog()
             FolderBrowserDialog.Description = "Select DuneAwakening Folder"
             Dim result As DialogResult = FolderBrowserDialog.ShowDialog()
@@ -147,6 +149,8 @@ Public Class Form1
     End Sub
 
     Private Sub CheckGamePath()
+        LIST_LOG.Items.Clear()
+        StatusUpdate(Seperator)
         If gamePath Is Nothing Then
             StatusUpdate("Did not select a folder!")
             StatusUpdate("Exit and try again!")
