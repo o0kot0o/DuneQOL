@@ -170,6 +170,7 @@ Public Class Form1
                 StatusUpdate(gamePath)
                 StatusUpdate("Select a new game folder")
             End If
+            StatusUpdate(Seperator)
         End If
     End Sub
 
